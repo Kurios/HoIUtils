@@ -121,14 +121,40 @@ function convertToArcheytpeHierachy(json) {
 }
 
 
+//todo: String builder or buffer?
+function JsonToHoi(json,level = 0){
+    var ret = "";
+    var tab = "";
+    for (var i = 0; i <= level; i++) {
+        tab = tab + "\t";
+    }
+    for (var i in json) {
+        if (i.charAt(0) == "_") {
 
-var inPath = "D:\\SteamLibrary\\SteamApps\\common\\Hearts of Iron IV\\common\\units\\equipment\\single_engine_airframe.txt"
-var outPath = "output.json"
+        }else if(typeof (json[i]) == "object") {
+            ret = ret + tab + i + " = {" + "\n" + JsonToHoi(json[i], level + 1) + tab + "}\n"
+        } else {
+            if (json[i] == "_") {
+                ret = ret + tab + i + "\n"
+            } else {
+                ret = ret + tab + i + " = " + json[i] + "\n"
+            }
+        }
+    }
+    return ret;
+}
 
+
+var inPath = "D:\\bive\\blackice_hoi4_mk_ii\\common\\units\\equipment\\ENG_air_equipment.txt"
+var outPath = "jsonoutput.json"
+var hoiOutPath = "hoiOutput.txt"
 console.log('ArchetypePanzer Initiate...');
 var dat = fs.readFileSync(inPath, { encoding : "utf8" });
 var parsed = HoiToJson(dat);
-parsed = convertToArcheytpeHierachy(parsed);
-console.log(JSON.stringify(parsed));
+//parsed = convertToArcheytpeHierachy(parsed);
+//console.log(JSON.stringify(parsed));
 fs.writeFileSync(outPath, JSON.stringify(parsed), {});
+console.log("...");
+var hoi = JsonToHoi(parsed);
+fs.writeFileSync(hoiOutPath, hoi, {});
 console.log("done");

@@ -1,0 +1,9 @@
+{
+  "name": "bicearchetype-panzer",
+  "version": "0.0.0",
+  "description": "BICEArchetypePanzer",
+  "main": "app.js",
+  "author": {
+    "name": "jmorg_000"
+  }
+}
